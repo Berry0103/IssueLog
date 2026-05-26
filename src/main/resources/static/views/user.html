@@ -1,0 +1,101 @@
+<style>
+    .form-label {
+        color: var(--bs-black) !important;
+    }
+    .modal-dialog {
+        margin: 0;
+    }
+</style>
+<div class="module" id="user">
+    <button id="addUserBtn" class="btn btn-primary translate-item">
+        <i class="fa fa-plus me-1"></i>新增用户
+    </button>
+    
+    <!-- 用户列表 -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-light text-center">
+                    <tr>
+                        <th class="d-none" data-original-text="ID">ID</th>
+                        <th class="translate-item">用户名</th>
+                        <th class="translate-item">姓名</th>
+                        <th class="translate-item">邮箱</th>
+                        <th class="translate-item">部门</th>
+                        <th class="translate-item">角色</th>
+                        <th class="translate-item">状态</th>
+                        <th class="translate-item">最后登录</th>
+                        <th class="translate-item">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    <!-- 用户数据将通过JavaScript加载 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加/编辑用户模态框 -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true" style="top: 50%;left: 50%;transform: translate(-50%,-50%)">
+    <div class="modal-dialog modal-lg" style="height: 100%;">
+        <div class="modal-content" style="height: 100%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalTitle" class="translate-item" data-original-text="添加用户">添加用户</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" id="userId">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-12">
+                            <label for="username" class="form-label translate-item" data-original-text="用户名">用户名</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastname" class="form-label translate-item" data-original-text="姓">姓</label>
+                            <input type="text" class="form-control" id="lastname" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="firstname" class="form-label translate-item" data-original-text="名">名</label>
+                            <input type="text" class="form-control" id="firstname" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label translate-item" data-original-text="邮箱">邮箱</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="deptSelect" class="form-label translate-item" data-original-text="部门">部门</label>
+                            <select class="form-select" id="deptSelect" required>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="roleLevel" class="form-label translate-item" data-original-text="角色">角色</label>
+                            <select class="form-select" id="roleLevel" required>
+                                <option value="8a6a4e98-4514-445d-afad-f3f21ebeec00" class="translate-item">经理</option>
+                                <option value="176a88f3-b3bb-420e-b268-7f5108537417" class="translate-item">组长</option>
+                                <option value="53a677d1-6e3b-4791-b447-395c2338f3b0" class="translate-item">普通用户</option>
+                                <option value="2b7caf59-823e-4c50-94f0-b30e4e9d4cda" class="translate-item">访客</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="status" class="form-label translate-item" data-original-text="状态">状态</label>
+                            <select class="form-select" id="status" required>
+                                <option value="2565ba2f-e06b-4a1c-b455-5e11f591cc6a" class="translate-item">在岗</option>
+                                <option value="76cd95b4-2fcf-4806-9659-6c51d6e3e8d2" class="translate-item">出差</option>
+                                <option value="3383e732-c990-442b-8f4d-0b522204de47" class="translate-item">休假</option>
+                                <option value="dcee6111-5202-4861-a262-293a362209d5" class="translate-item">离职</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveUserBtn" class="translate-item" data-original-text="保存">保存</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" class="translate-item" data-original-text="取消">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

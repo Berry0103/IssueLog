@@ -1,0 +1,200 @@
+<div class="module" id="statistics">
+    <h2>数据统计</h2>
+    <p class="text-secondary mb-4">设备运行数据统计分析与报表</p>
+    
+    <!-- 统计筛选 -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <select class="form-control">
+                        <option value="">所有设备</option>
+                        <option value="group1">生产车间设备</option>
+                        <option value="group2">仓库设备</option>
+                        <option value="group3">服务器设备</option>
+                        <option value="group4">网络设备</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <select class="form-control">
+                        <option value="">所有指标</option>
+                        <option value="temperature">温度</option>
+                        <option value="humidity">湿度</option>
+                        <option value="voltage">电压</option>
+                        <option value="memory">内存使用率</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <select class="form-control">
+                        <option value="day">按日统计</option>
+                        <option value="week">按周统计</option>
+                        <option value="month">按月统计</option>
+                        <option value="quarter">按季度统计</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3 d-flex">
+                    <button class="btn btn-primary me-2">
+                        <i class="fa fa-refresh"></i> 刷新数据
+                    </button>
+                    <button class="btn btn-outline-primary">
+                        <i class="fa fa-download"></i> 导出报表
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 关键指标 -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="stat-icon" style="background-color: rgba(22, 93, 255, 0.2); color: var(--primary-color);">
+                    <i class="fa fa-line-chart"></i>
+                </div>
+                <div class="stat-value">98.2%</div>
+                <div class="stat-label">设备平均在线率</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="stat-icon" style="background-color: rgba(0, 180, 42, 0.2); color: var(--success-color);">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="stat-value">12分钟</div>
+                <div class="stat-label">平均故障处理时间</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="stat-icon" style="background-color: rgba(255, 125, 0, 0.2); color: var(--warning-color);">
+                    <i class="fa fa-exclamation-circle"></i>
+                </div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">本月告警总数</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="stat-icon" style="background-color: rgba(124, 77, 255, 0.2); color: #7C4DFF;">
+                    <i class="fa fa-bolt"></i>
+                </div>
+                <div class="stat-value">92.5%</div>
+                <div class="stat-label">设备运行效率</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 图表区域 -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>设备在线率趋势</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary">本周</button>
+                        <button class="btn btn-sm btn-outline-primary">本月</button>
+                        <button class="btn btn-sm btn-outline-primary">本季度</button>
+                        <button class="btn btn-sm btn-outline-primary">本年</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="onlineRateChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>告警类型统计</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="alarmTypeChart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>设备故障率排名</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="failureRateChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 报表列表 -->
+    <div class="card">
+        <div class="card-header">
+            <h5>统计报表</h5>
+            <button class="btn btn-sm btn-primary">
+                <i class="fa fa-plus"></i> 生成新报表
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>报表名称</th>
+                            <th>生成时间</th>
+                            <th>类型</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>设备运行月度报告</td>
+                            <td>2023-06-30 18:30:00</td>
+                            <td>月度报告</td>
+                            <td><span class="status-badge status-success">已完成</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-download"></i> 下载
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>设备故障分析报告</td>
+                            <td>2023-07-10 10:15:22</td>
+                            <td>分析报告</td>
+                            <td><span class="status-badge status-success">已完成</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-download"></i> 下载
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>能耗统计分析</td>
+                            <td>2023-07-12 14:45:10</td>
+                            <td>统计分析</td>
+                            <td><span class="status-badge status-success">已完成</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-download"></i> 下载
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>设备维护计划</td>
+                            <td>2023-07-14 09:30:00</td>
+                            <td>计划报表</td>
+                            <td><span class="status-badge status-info">生成中</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" disabled>
+                                    <i class="fa fa-clock-o"></i> 等待
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

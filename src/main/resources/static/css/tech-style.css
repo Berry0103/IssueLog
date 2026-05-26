@@ -1,0 +1,328 @@
+/* 科技感配色方案 */
+:root {
+    --primary: #165DFF;
+    --primary-light: #4080FF;
+    --primary-dark: #0E42D2;
+    --secondary: #0FC6C2;
+    --accent: #722ED1;
+    --dark-bg: #1D2129;
+    --card-bg: #272E3B;
+    --text-primary: #F2F3F5;
+    --text-secondary: #C9CDD4;
+    --success: #00B42A;
+    --warning: #FF7D00;
+    --danger: #F53F3F;
+    --border-light: rgba(255, 255, 255, 0.1);
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-900: #15803d;
+    --dark-800: #1e293b;
+    --text-gray-200: #e2e8f0;
+    --text-gray-300: #cbd5e1;
+}
+
+/* 全局样式重置与基础设置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(22, 93, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(15, 198, 194, 0.05) 0%, transparent 20%);
+}
+
+/* 科技感卡片样式 */
+.tech-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.tech-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: all 0.5s ease;
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tech-card:hover::before {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* 导航与侧边栏样式 */
+.sidebar {
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-light);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-menu-item {
+    color: var(--text-secondary);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-menu-item.active {
+    background-color: rgba(22, 93, 255, 0.15);
+    color: var(--primary-light);
+    border-left-color: var(--primary);
+}
+
+.sidebar-menu-item:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+/* 顶部导航栏 */
+.navbar {
+    background-color: rgba(29, 33, 41, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-light);
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--gradient);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 93, 255, 0.4);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background-color: rgba(22, 93, 255, 0.1);
+}
+
+/* 数据展示样式 */
+.stat-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.stat-card .stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.stat-card .trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+}
+
+.trend.up {
+    color: var(--success);
+}
+
+.trend.down {
+    color: var(--danger);
+}
+
+/* 状态指示器 */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-online {
+    background-color: var(--success);
+    box-shadow: 0 0 10px rgba(0, 180, 42, 0.5);
+}
+
+.status-offline {
+    background-color: var(--danger);
+}
+
+.status-warning {
+    background-color: var(--warning);
+    box-shadow: 0 0 10px rgba(255, 125, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+
+/* 科技感动画 */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 数据图表容器 */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+/* 设备列表项 */
+.device-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.device-item:last-child {
+    border-bottom: none;
+}
+
+.device-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* 加载动画 */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.loading i {
+    font-size: 2rem;
+    margin-right: 10px;
+    animation: spin 1.5s linear infinite;
+}
+
+/* 模态框样式 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .tech-card {
+        padding: 15px;
+    }
+    
+    .stat-card .stat-value {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,175 @@
+<div class="module" id="events">
+    <h2>事件追踪</h2>
+    <p class="text-secondary mb-4">查看和管理设备产生的所有事件和告警</p>
+
+    <!-- 事件筛选 -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <select class="form-control">
+                        <option value="">所有事件类型</option>
+                        <option value="warning">警告</option>
+                        <option value="error">错误</option>
+                        <option value="info">信息</option>
+                        <option value="maintenance">维护</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <select class="form-control">
+                        <option value="">所有设备</option>
+                        <option value="DEV-2023-001">生产线A-01设备</option>
+                        <option value="DEV-2023-002">仓库B-03设备</option>
+                        <option value="DEV-2023-003">车间C-05设备</option>
+                        <option value="DEV-2023-004">服务器D-02</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="input-group">
+                        <input type="date" class="form-control" placeholder="开始日期">
+                        <span class="input-group-text" style="background-color: var(--border-color); border-color: var(--border-color);">至</span>
+                        <input type="date" class="form-control" placeholder="结束日期">
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 d-flex">
+                    <button class="btn btn-primary me-2">
+                        <i class="fa fa-search"></i> 搜索
+                    </button>
+                    <button class="btn btn-outline-primary">
+                        <i class="fa fa-refresh"></i> 重置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 事件统计 -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>事件类型分布</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="eventTypeChart" style="height: 250px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>设备事件分布</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="deviceEventChart" style="height: 250px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 事件列表 -->
+    <div class="card">
+        <div class="card-header">
+            <h5>事件列表</h5>
+            <div>
+                <button class="btn btn-sm btn-outline-primary">
+                    <i class="fa fa-download"></i> 导出数据
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>设备名称</th>
+                            <th>事件类型</th>
+                            <th>事件描述</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2023-07-15 08:32:15</td>
+                            <td>生产线A-01设备</td>
+                            <td><span class="status-badge status-warning">警告</span></td>
+                            <td>温度过高告警</td>
+                            <td><span class="status-badge status-warning">未处理</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">处理</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-07-14 16:45:30</td>
+                            <td>仓库B-03设备</td>
+                            <td><span class="status-badge status-danger">错误</span></td>
+                            <td>网络连接中断</td>
+                            <td><span class="status-badge status-success">已解决</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">查看</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-07-14 10:12:05</td>
+                            <td>车间C-05设备</td>
+                            <td><span class="status-badge status-warning">警告</span></td>
+                            <td>电压异常</td>
+                            <td><span class="status-badge status-success">已解决</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">查看</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-07-13 19:25:40</td>
+                            <td>服务器D-02</td>
+                            <td><span class="status-badge status-warning">警告</span></td>
+                            <td>内存使用率过高</td>
+                            <td><span class="status-badge status-warning">处理中</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">处理</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-07-13 14:05:12</td>
+                            <td>生产线A-01设备</td>
+                            <td><span class="status-badge status-info">信息</span></td>
+                            <td>设备自检完成</td>
+                            <td><span class="status-badge status-info">已确认</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">查看</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2023-07-12 09:30:00</td>
+                            <td>网关E-01</td>
+                            <td><span class="status-badge status-maintenance">维护</span></td>
+                            <td>定期维护提醒</td>
+                            <td><span class="status-badge status-success">已处理</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">查看</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <nav>
+
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">上一页</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">下一页</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

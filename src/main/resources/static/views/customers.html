@@ -1,0 +1,114 @@
+<div class="module" id="customers">
+  <h2>客户管理</h2>
+  <p class="text-secondary mb-4">管理系统客户信息及用户关联</p>
+
+  <!-- 客户操作 -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="search-box">
+            <i class="fa fa-search"></i>
+            <input type="text" class="form-control" id="customerSearch" placeholder="搜索客户名称...">
+          </div>
+        </div>
+        <div class="col-md-6 mb-3 text-md-end">
+          <button class="btn btn-primary" id="addCustomerBtn">
+            <i class="fa fa-plus"></i> 添加客户
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 客户列表 -->
+  <div class="card">
+    <div class="card-header">
+      <h5>客户列表</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>客户代码</th>
+            <th>客户名称</th>
+            <th>所属区域</th>
+            <th>客户等级</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody id="customerTableBody">
+          <!-- 客户数据将通过JS动态加载 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 分页 -->
+      <nav>
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">上一页</a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">下一页</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- 客户编辑模态框 -->
+<div class="modal fade" id="customerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerModalTitle">添加客户</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="customerForm">
+          <input type="hidden" id="customerId">
+          <div class="mb-3">
+            <label class="form-label">客户代码</label>
+            <input type="text" class="form-control" id="customerCode" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">客户名称</label>
+            <input type="text" class="form-control" id="customerName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">所属区域</label>
+            <select class="form-select" id="areaCode">
+              <option value="">请选择区域</option>
+              <!-- 区域选项将通过字典接口加载 -->
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">客户等级</label>
+            <select class="form-select" id="customerLevel">
+              <option value="VIP">VIP客户</option>
+              <option value="NORMAL">普通客户</option>
+              <option value="TRIAL">试用客户</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">状态</label>
+            <select class="form-select" id="customerStatus">
+              <option value="1">正常</option>
+              <option value="0">禁用</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="saveCustomerBtn">保存</button>
+      </div>
+    </div>
+  </div>
+</div>

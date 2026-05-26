@@ -1,0 +1,252 @@
+<div class="module" id="help">
+    <h2>帮助中心</h2>
+    <p class="text-secondary mb-4">系统使用指南和常见问题解答</p>
+    
+    <!-- 帮助搜索 -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="search-box mx-auto" style="max-width: 500px;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control" placeholder="搜索帮助文档、常见问题...">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <!-- 快速指南 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>快速入门指南</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush" style="background-color: transparent;">
+                        <li class="list-group-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <a href="#" class="text-primary" style="text-decoration: none;">
+                                <i class="fa fa-file-text-o me-2"></i>系统简介与界面导航
+                            </a>
+                        </li>
+                        <li class="list-group-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <a href="#" class="text-primary" style="text-decoration: none;">
+                                <i class="fa fa-file-text-o me-2"></i>设备添加与配置教程
+                            </a>
+                        </li>
+                        <li class="list-group-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <a href="#" class="text-primary" style="text-decoration: none;">
+                                <i class="fa fa-file-text-o me-2"></i>设备监控与数据查看
+                            </a>
+                        </li>
+                        <li class="list-group-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <a href="#" class="text-primary" style="text-decoration: none;">
+                                <i class="fa fa-file-text-o me-2"></i>告警设置与处理流程
+                            </a>
+                        </li>
+                        <li class="list-group-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <a href="#" class="text-primary" style="text-decoration: none;">
+                                <i class="fa fa-file-text-o me-2"></i>报表生成与导出
+                            </a>
+                        </li>
+                        <li class="list-group-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <a href="#" class="text-primary" style="text-decoration: none;">
+                                <i class="fa fa-file-text-o me-2"></i>用户管理与权限配置
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 视频教程 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>视频教程</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div style="background-color: rgba(255, 255, 255, 0.05); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                <i class="fa fa-play-circle-o fa-3x text-primary"></i>
+                            </div>
+                            <p class="mt-2 text-center">系统安装与配置</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div style="background-color: rgba(255, 255, 255, 0.05); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                <i class="fa fa-play-circle-o fa-3x text-primary"></i>
+                            </div>
+                            <p class="mt-2 text-center">设备接入指南</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div style="background-color: rgba(255, 255, 255, 0.05); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                <i class="fa fa-play-circle-o fa-3x text-primary"></i>
+                            </div>
+                            <p class="mt-2 text-center">高级数据分析</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div style="background-color: rgba(255, 255, 255, 0.05); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                <i class="fa fa-play-circle-o fa-3x text-primary"></i>
+                            </div>
+                            <p class="mt-2 text-center">故障排查流程</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <!-- 常见问题 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>常见问题</h5>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="background-color: transparent; color: var(--text-primary);">
+                                    如何添加新设备到系统中？
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body" style="color: var(--text-secondary);">
+                                    要添加新设备，请按照以下步骤操作：<br>
+                                    1. 进入"设备管理"模块<br>
+                                    2. 点击"添加设备"按钮<br>
+                                    3. 填写设备基本信息，包括设备名称、型号、序列号等<br>
+                                    4. 配置设备连接参数，如IP地址、端口号等<br>
+                                    5. 选择设备所属分组和位置<br>
+                                    6. 点击"保存"完成添加<br>
+                                    新设备添加后，系统会自动尝试连接并获取数据。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="background-color: transparent; color: var(--text-primary);">
+                                    设备显示离线该如何处理？
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body" style="color: var(--text-secondary);">
+                                    设备显示离线可能有多种原因，请按以下步骤排查：<br>
+                                    1. 检查设备是否通电并正常运行<br>
+                                    2. 检查网络连接是否正常，设备IP是否可达<br>
+                                    3. 检查防火墙设置是否阻止了设备与服务器的通信<br>
+                                    4. 重启设备尝试恢复连接<br>
+                                    5. 如问题持续，请联系技术支持。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="background-color: transparent; color: var(--text-primary);">
+                                    如何设置设备告警阈值？
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body" style="color: var(--text-secondary);">
+                                    设置设备告警阈值的步骤：<br>
+                                    1. 在"设备管理"中找到需要设置的设备，点击"查看"<br>
+                                    2. 在设备详情页面中，找到"告警设置"选项卡<br>
+                                    3. 对各项参数设置合适的告警阈值，包括警告阈值和错误阈值<br>
+                                    4. 选择告警通知方式（邮件、短信等）<br>
+                                    5. 点击"保存设置"完成配置<br>
+                                    系统会根据设置的阈值监控设备状态，并在超出阈值时发出相应告警。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="background-color: transparent; color: var(--text-primary);">
+                                    如何导出设备数据报表？
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body" style="color: var(--text-secondary);">
+                                    导出设备数据报表的方法：<br>
+                                    1. 进入"数据统计"模块<br>
+                                    2. 设置需要导出的数据范围、时间周期和设备范围<br>
+                                    3. 点击"生成报表"按钮<br>
+                                    4. 报表生成完成后，点击"导出报表"按钮<br>
+                                    5. 选择导出格式（Excel、PDF等）<br>
+                                    6. 系统会生成并下载相应的报表文件。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item" style="background-color: transparent; border-color: var(--border-color);">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="background-color: transparent; color: var(--text-primary);">
+                                    如何添加新用户并分配权限？
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body" style="color: var(--text-secondary);">
+                                    添加新用户并分配权限的步骤：<br>
+                                    1. 进入"用户管理"模块（需要管理员权限）<br>
+                                    2. 点击"添加用户"按钮<br>
+                                    3. 填写用户基本信息，包括用户名、姓名、邮箱等<br>
+                                    4. 设置初始密码<br>
+                                    5. 从下拉列表中选择合适的用户角色<br>
+                                    6. 点击"保存"完成添加<br>
+                                    系统会根据选择的角色自动分配相应的权限。如需自定义权限，请在"角色与权限管理"中进行配置。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 技术支持 -->
+    <div class="card">
+        <div class="card-header">
+            <h5>技术支持</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>联系技术支持</h6>
+                    <p>如果您在使用过程中遇到任何问题，请通过以下方式联系我们的技术支持团队：</p>
+                    <ul>
+                        <li>
+                            <i class="fa fa-phone" style="color: var(--primary-color); margin-right: 10px;"></i>
+                            服务热线：400-888-9999（工作日 9:00-18:00）
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope" style="color: var(--primary-color); margin-right: 10px;"></i>
+                            邮箱支持：support@example.com
+                        </li>
+                        <li>
+                            <i class="fa fa-comments" style="color: var(--primary-color); margin-right: 10px;"></i>
+                            在线客服：点击页面右下角"在线咨询"按钮
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>提交支持工单</h6>
+                    <form>
+                        <div class="mb-3">
+                            <label for="supportSubject" class="form-label">问题标题</label>
+                            <input type="text" class="form-control" id="supportSubject" placeholder="请简要描述您遇到的问题">
+                        </div>
+                        <div class="mb-3">
+                            <label for="supportCategory" class="form-label">问题类别</label>
+                            <select class="form-control" id="supportCategory">
+                                <option value="">请选择问题类别</option>
+                                <option value="installation">安装配置</option>
+                                <option value="device">设备连接</option>
+                                <option value="function">功能使用</option>
+                                <option value="data">数据异常</option>
+                                <option value="other">其他问题</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="supportDescription" class="form-label">问题描述</label>
+                            <textarea class="form-control" id="supportDescription" rows="3" placeholder="请详细描述您遇到的问题，包括操作步骤、错误信息等"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">提交工单</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

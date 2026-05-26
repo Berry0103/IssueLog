@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 命名空间对应 DicMapper 接口全路径 -->
+<mapper namespace="com.yuanzhang.econexus.mapper.DicMapper">
+
+    <!-- 根据 typeCode 查询字典项 -->
+    <select id="selectByTypeCode" parameterType="string" resultType="com.yuanzhang.econexus.dto.DicDTO">
+        SELECT
+            dt.type_code AS typeCode,  -- 字典类型编码（如"gender"）
+            d.dic_code AS dicCode,     -- 字典值（如1=男）
+            d.dic_label AS dicLabel    -- 字典标签（如"男"）
+        FROM
+            dictype dt
+                INNER JOIN
+            dictionary d ON dt.id = d.type_id  -- 关联字典类型表和字典表
+        WHERE
+            dt.type_code = #{typeCode}  -- 按类型编码筛选
+        ORDER BY
+            d.sort ASC  -- 按排序字段升序排列
+    </select>
+
+</mapper>

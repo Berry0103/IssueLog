@@ -1,0 +1,325 @@
+<style>
+    /* 事务列表表格列宽设置 */
+    .table-striped thead th:nth-child(2),
+    .table-striped thead td:nth-child(2) {
+        width: 8%; /* 项目号 */
+    }
+    .table-striped thead th:nth-child(3),
+    .table-striped thead td:nth-child(3) {
+        width: 60%; /* 标题（较宽） */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .table-striped thead th:nth-child(4),
+    .table-striped thead td:nth-child(4) {
+        width: 6%; /* 优先级 */
+    }
+    .table-striped thead th:nth-child(5),
+    .table-striped thead td:nth-child(5) {
+        width: 8%; /* 状态 */
+    }
+    .table-striped thead th:nth-child(6),
+    .table-striped thead td:nth-child(6) {
+        width: 10%; /* 截止时间 */
+    }
+    .table-striped thead th:nth-child(7),
+    .table-striped thead td:nth-child(7) {
+        width: 6%; /* 操作 */
+    }
+    /* 定义闪烁动画 */
+    @keyframes flashColor {
+        0% { color: red; }    /* 初始颜色：红色 */
+        50% { color: orange; }  /* 中间帧：蓝色 */
+        100% { color: red; }  /* 结束帧：回到红色，形成循环 */
+    }
+
+    /* 应用动画的类 */
+    .flash-text {
+        font-size: 24px;
+        /* 绑定动画：动画名 时长 循环次数 线性过渡 */
+        animation: flashColor 2s infinite linear;
+    }
+
+    /* 甘特图相关样式 */
+    .gantt-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* 查看详情模态框样式 */
+    #viewDashTransactionModal .list-group-item {
+        margin-bottom: 10px;
+        border-radius: 6px;
+    }
+
+    #viewDashTransactionModal .list-group-item h6 {
+        color: #0d6efd;
+    }
+
+    #viewDashTransactionModal {
+        max-height: 80vh !important;
+        overflow-y: auto;
+    }
+
+    #viewDashTransactionModal .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    #viewDashTransactionModal p {
+        font-size: 14px; /* 字体大小 */
+        color: #333; /* 字体颜色（深灰色，比默认更清晰） */
+        line-height: 1.6; /* 行高（提升可读性） */
+        margin-bottom: 0; /* 清除默认底部边距（避免间距过大） */
+        padding: 2px 0; /* 上下内边距（优化点击区域和视觉） */
+    }
+    .form-label {
+        color: var(--bs-black) !important;
+    }
+    .modal-dialog {
+        margin: 0;
+    }
+</style>
+<div class="dashboard-container">
+    <!-- 事务务相关统计卡片 -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title translate-item">总事务数</h5>
+                    <h2 id="totalIssues" class="display-4">0</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-white" data-module="issues">查看详情</a>
+                    <i class="fa fa-tasks"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card column-open text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title translate-item">开启事务</h5>
+                    <h2 id="completedIssues" class="display-4">0</h2>
+                    <i class="fa fa-check-circle"></i>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-white" data-module="issues">查看详情</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card column-progress text-dark h-100">
+                <div class="card-body">
+                    <h5 class="card-title translate-item">进行中事务</h5>
+                    <h2 id="inProgressIssues" class="display-4">0</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-dark" data-module="issues">查看详情</a>
+                    <i class="fa fa-spinner"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-danger text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title translate-item">超期事务</h5>
+                    <h2 id="overdueIssues" class="display-4">0</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-white" data-module="issues">查看详情</a>
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    &lt;!&ndash; 图表区域 &ndash;&gt;-->
+<!--    <div class="row mb-4">-->
+<!--        <div class="col-md-6 mb-4">-->
+<!--            <div class="card h-100">-->
+<!--                <div class="card-header">-->
+<!--                    <h5 class="mb-0">事务项目分布</h5>-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <div id="issueProjectChart" style="width: 100%; height: 300px;"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-6 mb-4">-->
+<!--            <div class="card h-100">-->
+<!--                <div class="card-header">-->
+<!--                    <h5 class="mb-0">事务状态占比</h5>-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <div id="issueStatusChart" style="width: 100%; height: 300px;"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <!-- 新增甘特图区域 -->
+    <div class="row mb-4">
+        <div class="col-md-12 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0 translate-item" style="color: #f8f9fa">近期事务排程</h5>
+                </div>
+                <div class="card-body">
+                    <div id="ganttChart" class="gantt-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 近期事务表格 -->
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="flash-text translate-item">近期事务 (按截止日期排序)</h5>
+                    <a href="#" class="translate-item" data-module="issues" onclick="jumpIssues()">查看全部</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-light text-center">
+                            <tr>
+                                <th class="d-none">事务编号</th>
+                                <th class="translate-item">项目号</th>
+                                <th class="translate-item">事务描述</th>
+                                <th class="translate-item">优先级</th>
+                                <th class="translate-item">状态</th>
+                                <th class="translate-item">截止时间</th>
+                                <th class="translate-item">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="recentIssuesContainer">
+                            <!-- 事务列表将通过JavaScript动态生成 -->
+                            <tr>
+                                <td colspan="6" class="text-center">加载中...</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 查看事务详情专用模态框 -->
+<div class="modal fade" id="viewDashTransactionModal" tabindex="-1" aria-hidden="true" style="top: 50%;left: 50%;transform: translate(-50%,-50%)">
+    <div class="modal-dialog modal-lg" style="height: 100%;">
+        <div class="modal-content" style="height: 100%;">
+            <div class="modal-header">
+                <h5 class="modal-title form-label translate-item" id="viewDashTransactionModalTitle">事务详情</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 mb-4">
+                    <input type="hidden" id="thisactionId" name="id"> <!-- 用于编辑时传递ID -->
+                    <!-- 基本信息区域 -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold translate-item">项目</label>
+                        <p id="viewProjectName"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold translate-item">报告人</label>
+                        <p id="viewReporter"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold translate-item">执行人</label>
+                        <p id="viewExecutor"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold translate-item">负责人</label>
+                        <p id="viewLeader"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold translate-item">状态</label>
+                        <p id="viewStatus"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold translate-item">截止时间</label>
+                        <p id="viewExpectedCompletionTime"></p>
+                    </div>
+                    <div class="col-md-12" style="height: 20vh !important;">
+                        <label class="form-label fw-bold translate-item">事务详情</label>
+                        <p id="viewDescription" class="border p-3 rounded" style="height: 70%;"></p>
+                    </div>
+                </div>
+
+                <!-- 更新记录区域 -->
+                <div class="mt-4">
+                    <h5 class="form-label fw-bold translate-item">更新记录</h5>
+                    <div id="updateListContainer" class="mt-2">
+                        <!-- 更新记录将通过JS动态加载 -->
+                        <p class="text-muted translate-item">暂无更新记录</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary translate-item" id="openDashAddUpdateBtn">添加事务更新</button>
+                <button type="button" class="btn btn-secondary translate-item" data-bs-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加事务更新模态框 -->
+<div class="modal fade" id="addDashUpdateModal" tabindex="-1" aria-hidden="true" style="max-width: 500px;top: 50%;left: 50%;transform: translate(-50%,-50%)">
+    <div class="modal-dialog modal-md" style="height: 100%;">
+        <div class="modal-content" style="height: 100%;">
+            <div class="modal-header">
+                <h5 class="modal-title translate-item">添加事务更新</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addUpdateForm">
+                    <!-- 存储当前事务ID（隐藏字段） -->
+                    <input type="hidden" id="currentIssueId">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold translate-item" for="updateContent">更新内容 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="updateContent" rows="3" placeholder="请输入事务更新的详细内容" required></textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold" for="updateStatus">事务状态</label>
+                            <select class="form-select" id="updateStatus" required>
+                                <option value="ce80a01d-0955-4295-8bae-a535cb7ed8ce">开启</option>
+                                <option value="613b595e-66f0-4a5f-b0a1-99fa2919778f">进行中</option>
+                                <option value="561dfe60-26e3-404b-87ed-9981a4c8a404">待验证</option>
+                                <option value="19dfdcbd-098c-46ae-89e2-7ef78cd14fbe">待提交</option>
+                                <option value="0d652c28-8172-48d9-9bbf-586fe526b620">已关闭</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold" for="updateExecutor_dash">执行人</label>
+                            <!-- 下拉选项列表 -->
+                            <select class="form-select" id="updateExecutor_dash">
+                                <option value=""></option>
+                                <!-- JavaScript 将动态填充这里的选项 -->
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold translate-item" for="updateLeader_dash">负责人</label>
+                            <!-- 下拉选项列表 -->
+                            <select class="form-select" id="updateLeader_dash">
+                                <option value=""></option>
+                                <!-- JavaScript 将动态填充这里的选项 -->
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary translate-item" id="saveDashUpdateBtn">保存更新</button>
+                <button type="button" class="btn btn-secondary translate-item" data-bs-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,881 @@
+/* 整合后的样式文件 - 结合基础样式与科技感设计 */
+:root {
+    /* 主色调定义 */
+    --primary: #165DFF;
+    --primary-light: #4080FF;
+    --primary-dark: #0E42D2;
+    --secondary: #64ffda; /* 亮青色高亮，保留原有特色 */
+    --secondary-dark: #3ba272;
+    --accent: #722ED1;
+    --dark-bg: #0a192f; /* 基础蓝黑色背景 */
+    --card-bg: rgba(17, 34, 64, 0.7); /* 半透明卡片背景 */
+    --card-bg-solid: #272E3B; /* 实色卡片背景 */
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --border-light: rgba(100, 255, 218, 0.1); /* 亮青色边框 */
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    --text-gradient: linear-gradient(90deg, #FFDD02F2 0%, #f0f0f0 100%);
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-900: #15803d;
+    --dark-800: #1e293b;
+    --text-gray-200: #e2e8f0;
+    --text-gray-300: #cbd5e1;
+}
+
+/* 全局样式重置与基础设置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+    background-image:
+            linear-gradient(rgba(100, 255, 218, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(100, 255, 218, 0.05) 1px, transparent 1px),
+            radial-gradient(circle at 10% 20%, rgba(22, 93, 255, 0.05) 0%, transparent 20%),
+            radial-gradient(circle at 90% 80%, rgba(100, 255, 218, 0.05) 0%, transparent 20%);
+    background-size: 20px 20px;
+    background-position: center center;
+    overflow: hidden; /* 禁止整个页面滚动 */
+}
+
+/* 布局样式 */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    width: 12%;
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    z-index: 100;
+    border-right: 1px solid var(--border-light);
+    position: relative;
+}
+
+/* 侧边栏收起状态 */
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed .sidebar-logo span,
+.sidebar.collapsed .nav-link span {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-logo {
+    justify-content: center;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+/* 主内容区样式 */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dark-bg);
+    width: calc(100% - 250px);
+    transition: width 0.3s ease;
+    height: 100vh;
+}
+
+/* 侧边栏收起时调整主内容区宽度 */
+.sidebar.collapsed ~ .main-content {
+    width: calc(100% - 70px);
+}
+
+/* 顶部导航栏 */
+.navbar {
+    background-color: rgba(10, 25, 47, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    z-index: 90;
+    border-bottom: 1px solid var(--border-light);
+    padding: 0.5rem 1rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* 侧边栏切换按钮 */
+.sidebar-toggle {
+    position: absolute;
+    right: -10px;
+    top: 20px;
+    width: 20px;
+    height: 40px;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-light);
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    color: var(--secondary);
+    cursor: pointer;
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Logo和标题样式 */
+.logo-image, .header-logo {
+    height: 5vh;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-image-mobile, .header-logo-mobile {
+    height: 5vw;
+    width: auto;
+    object-fit: contain;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.2rem 1rem;
+}
+
+/* 蓝绿渐变文字 */
+.gradient-text {
+    animation: hubFlashColor 2s infinite linear;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+/* 模块容器样式 */
+.module {
+    width: 100%;
+    /*max-width: 1200px;*/
+    margin: 0 auto;
+}
+
+/* 次要文本样式（与tech-style中的变量保持一致） */
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+/* 卡片头部样式补充 */
+.card-header {
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(17, 34, 64, 0.5);
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    font-weight: 600;
+}
+
+/* 联系项样式 */
+.contact-item {
+    padding: 0.5rem 0;
+    transition: background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+.contact-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* 按钮轮廓样式补充 */
+.btn-outline-primary {
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(22, 93, 255, 0.1);
+    color: var(--primary-light);
+    border-color: var(--primary-light);
+}
+
+/* 间距工具类补充（若未使用Bootstrap） */
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+/* 响应式网格补充（若未使用Bootstrap） */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* 绿色文本样式 */
+.text-green-300 {
+    color: rgba(34, 197, 94, 0.8); /* 基于 --green-500 的浅色版本 */
+}
+
+.text-green-500 {
+    color: var(--green-500); /* 直接使用现有绿色变量 */
+}
+
+/* 可选：补充其他绿色文本层级以保持一致性 */
+.text-green-400 {
+    color: var(--green-400);
+}
+
+.text-green-600 {
+    color: var(--green-600);
+}
+
+.text-gray-200{
+    color: var(--text-gray-200);
+}
+
+.text-gray-300{
+    color: var(--text-gray-300);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-header {
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-menu {
+    padding: 1rem 0;
+}
+
+/* 导航链接样式 */
+.nav-link, .sidebar-menu-item {
+    color: var(--text-secondary);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+}
+
+.nav-link:hover, .nav-link.active,
+.sidebar-menu-item:hover, .sidebar-menu-item.active {
+    color: var(--secondary);
+    background-color: rgba(100, 255, 218, 0.1);
+}
+
+.sidebar-menu-item.active {
+    background-color: rgba(22, 93, 255, 0.15);
+    color: var(--primary-light);
+    border-left-color: var(--primary);
+}
+
+.nav-link i, .sidebar-menu-item i {
+    width: 1.25rem;
+    text-align: center;
+}
+
+/* 内容区域样式 */
+.content-wrapper {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+    background-image:
+            linear-gradient(rgba(100, 255, 218, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(100, 255, 218, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center center;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* 卡片样式 - 合并基础卡片与科技感卡片 */
+.card, .tech-card {
+    border: 1px solid var(--border-light);
+    background-color: var(--card-bg);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card::before, .tech-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: all 0.5s ease;
+}
+
+.card:hover, .tech-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover::before, .tech-card:hover::before {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* 搜索框响应式调整 */
+.search-container {
+    max-width: 300px;
+    width: 100%;
+    display: none;
+}
+
+.search-container.active {
+    display: flex;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--gradient);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 93, 255, 0.4);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background-color: rgba(22, 93, 255, 0.1);
+}
+
+/* 加载指示器 */
+.loading-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(10, 25, 47, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 0.3rem solid rgba(100, 255, 218, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--secondary);
+    animation: spin 1s ease-in-out infinite;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.loading i {
+    font-size: 2rem;
+    margin-right: 10px;
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 状态标签与指示器 */
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-online {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.status-online .status-indicator {
+    background-color: var(--success);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.status-offline {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.status-offline .status-indicator {
+    background-color: var(--danger);
+}
+
+.status-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+}
+
+.status-warning .status-indicator {
+    background-color: var(--warning);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    animation: pulse 2s infinite;
+}
+
+/* 用户菜单 */
+.user-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 150px;
+    background-color: var(--card-bg-solid);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    border-radius: 0.375rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 0;
+    display: none;
+    z-index: 1000;
+}
+
+.user-menu.show {
+    display: block;
+}
+
+.user-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.user-menu a:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+    color: var(--secondary);
+}
+
+/* 表格样式 */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    padding: 0.75rem 0.75rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.table thead th {
+    background-color: rgba(17, 34, 64, 0.5);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(100, 255, 218, 0.05);
+}
+
+/* 数据展示样式 */
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.stat-card .stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.stat-card .trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+}
+
+.trend.up {
+    color: var(--success);
+}
+
+.trend.down {
+    color: var(--danger);
+}
+
+/* 数据图表容器 */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+/* 设备列表项 */
+.device-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.device-item:last-child {
+    border-bottom: none;
+}
+
+.device-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* 模态框样式 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background-color: var(--card-bg-solid);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 68vh;
+    overflow-y: hidden;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* 事务列表表格样式优化 */
+.table-striped {
+    background-color: var(--card-bg); /* 父容器背景色 */
+    border-radius: 8px;
+    overflow: hidden;
+    border-collapse: collapse; /* 合并边框，避免间隙 */
+}
+
+/* 表头样式 - 保持渐变，让单元格透明继承父背景 */
+.table-striped thead {
+    background: linear-gradient(90deg, rgba(22, 93, 255, 0.15), rgba(15, 198, 194, 0.15));
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.table-striped thead th {
+    color: var(--text-gray-200);
+    font-weight: 600;
+    padding: 0.8rem 1rem;
+    border-right: 1px solid rgba(100, 255, 218, 0.1);
+    background: transparent; /* 关键：让表头单元格继承thead的渐变色背景 */
+}
+
+.table-striped thead th:last-child {
+    border-right: none;
+}
+
+/* 表格内容样式 - 单元格透明，继承父容器/行的背景色 */
+.table-striped tbody td {
+    color: var(--text-gray-300);
+    padding: 0.5rem 0.5rem;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.05);
+    border-right: 1px solid rgba(100, 255, 218, 0.05);
+    background: transparent; /* 关键：让内容单元格继承tr的交替背景色 */
+}
+
+.table-striped tbody td:last-child {
+    border-right: none;
+}
+
+/* 交替行颜色 - 直接作用于tr，单元格透明继承 */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* 排序相关样式 */
+.sortable {
+    cursor: pointer; /* 鼠标悬浮显示手型 */
+    user-select: none; /* 禁止文本选中 */
+}
+.sortable:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+}
+.sort-icon {
+    margin-left: 5px;
+    color: #6c757d;
+}
+/* 升序/降序箭头 */
+.sort-icon.asc::after { content: "↑"; }
+.sort-icon.desc::after { content: "↓"; }
+/* 当前排序列高亮 */
+.sortable.active {
+    color: #0d6efd; /* 主题色 */
+    font-weight: bold;
+}
+
+/* 状态标签优化 */
+.badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.column-open {
+    opacity: 1;
+    background-color: #d63384 !important;
+}
+.column-progress {
+    opacity: 1;
+    background-color: #ffc107 !important;
+}
+.column-validation {
+    opacity: 1;
+    background-color: #20c997 !important;
+}
+.column-pending {
+    opacity: 1;
+    background-color: #6c757d !important;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 定义闪烁动画 */
+@keyframes hubFlashColor {
+    0% { color: #FFDD02F2; }    /* 初始颜色：红色 */
+    50% { color: #f0f0f0; }  /* 中间帧：蓝色 */
+    100% { color: #FFDD02F2; }  /* 结束帧：回到红色，形成循环 */
+}
+
+/* 应用动画的类 */
+.flash-text-hub {
+    font-size: 24px;
+    /* 绑定动画：动画名 时长 循环次数 线性过渡 */
+    animation: hubFlashColor 2s infinite linear;
+}
+
+/* 科技感动画 */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* 响应式调整 */
+@media (min-width: 768px) {
+    .search-container {
+        display: flex;
+    }
+
+    .search-toggle {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 0;
+        position: absolute;
+        height: 100%;
+    }
+
+    .sidebar.open {
+        width: 250px;
+    }
+
+    .sidebar.collapsed {
+        width: 0;
+    }
+
+    .sidebar.collapsed.open {
+        width: 250px;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .sidebar ~ .main-content {
+        width: 100%;
+    }
+
+    .mobile-menu-toggle {
+        display: block !important;
+    }
+
+    .navbar-right {
+        gap: 0.5rem;
+    }
+
+    .tech-card {
+        padding: 15px;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.5rem;
+    }
+    /*表格用*/
+    .table-striped {
+        font-size: 0.85rem;
+    }
+
+    .table-striped thead th,
+    .table-striped tbody td {
+        padding: 0.6rem 0.5rem;
+    }
+}

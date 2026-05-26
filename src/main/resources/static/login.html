@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YZ Hub</title>
+  <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+  <style>
+    /* 基础样式重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden; /* 隐藏滚动条 */
+    }
+
+    /* 星空容器样式 */
+    .stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: -1;
+      background: #0a0a1a; /* 深太空背景 */
+    }
+
+    .star {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: starMove linear forwards; /* 取消infinite，改为单次动画后通过JS重置 */
+    }
+
+    /* 动画保持移动逻辑，但不自动循环 */
+    @keyframes starMove {
+      from {
+        transform: translate(0, 0);
+      }
+      to {
+        transform: translate(var(--move-x), var(--move-y));
+      }
+    }
+
+    /* 星星闪烁动画 */
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    /* 登录卡片 */
+    .login-container {
+      position: relative;
+      z-index: 2; /* 确保在星空上方 */
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 3rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      color: white;
+    }
+
+    .login-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #4a90e2;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 0.8rem;
+      background: #4a90e2;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-login:hover {
+      background: #3a7bc8;
+    }
+
+    /* 忘记密码链接样式 */
+    .forgot-password {
+      display: block;
+      width: 70px;
+      text-align: right;
+      margin: 1rem 0 0.5rem;
+      color: #4a90e2;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: pointer;
+      float: right;
+    }
+
+    .forgot-password:hover {
+      color: #6aa8f7;
+      text-decoration: underline;
+    }
+
+    /* 错误信息样式 */
+    .errorMsg {
+      color: #ff4d4f; /* 红色文字，醒目提示 */
+      font-size: 0.875rem;
+      height: 24px; /* 固定高度，避免表单抖动 */
+      line-height: 24px;
+      margin: 8px 0 6px; /* 与输入框和按钮保持间距 */
+      padding-left: 4px; /* 左对齐输入框 */
+      visibility: hidden; /* 默认隐藏 */
+      /* 可选：添加动画效果 */
+      transition: visibility 0.2s ease, opacity 0.2s ease;
+      opacity: 0;
+    }
+
+    /* 有错误时添加此类，显示提示 */
+    #errorMsg.error-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* 模态框样式 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      background: rgba(10, 10, 26, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: white;
+      transform: translateY(-20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .modal-close:hover {
+      color: white;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-modal {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-cancel {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-confirm {
+      background: #4a90e2;
+      color: white;
+    }
+
+    .btn-confirm:hover {
+      background: #3a7bc8;
+    }
+
+    /* 模态框提示信息样式 */
+    .modal-message {
+      font-size: 0.875rem;
+      height: 24px;
+      line-height: 24px;
+      margin: 8px 0 16px;
+      padding-left: 4px;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s ease, opacity 0.2s ease;
+    }
+
+    .modal-message.error {
+      color: #ff4d4f;
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-message.success {
+      color: #52c41a;
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* 加载状态样式 */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    /* 关联用户列表样式 */
+    .user-list {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-list-title {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .user-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+
+    .user-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .username-text {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .btn-reset-user {
+      padding: 0.5rem 1rem;
+      background: #4a90e2;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-reset-user:hover {
+      background: #3a7bc8;
+    }
+
+    .btn-reset-user:disabled {
+      background: rgba(74, 144, 226, 0.5);
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+<!-- 星空背景容器 -->
+<div class="stars-container" id="stars"></div>
+
+<!-- 登录容器 -->
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">账户登录</h2>
+    <!-- 登录表单：提交到/api/auth/login -->
+    <form action="/api/auth/login" method="post">
+      <div class="form-group">
+        <label for="username">用户名</label>
+        <input type="text" id="username" name="username" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="password">密码</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+        <!-- 忘记密码链接（改为可点击的span） -->
+        <span class="forgot-password" id="forgotPasswordLink">忘记密码?</span>
+      </div>
+      <!-- 显示错误信息（当URL包含?error参数时） -->
+      <div class="errorMsg" id="errorMsg"></div>
+      <button type="submit" class="btn-login">登录</button>
+    </form>
+  </div>
+</div>
+
+<!-- 忘记密码模态框 -->
+<div class="modal-overlay" id="forgotPasswordModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">忘记密码</h3>
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="resetEmail">绑定邮箱</label>
+        <input type="email" id="resetEmail" class="form-control" placeholder="请输入您的绑定邮箱" required>
+        <div class="modal-message" id="modalMessage"></div>
+      </div>
+
+      <!-- 关联用户列表区域（默认隐藏） -->
+      <div id="userListSection" style="display: none;">
+        <div class="user-list">
+          <div class="user-list-title">该邮箱关联的用户：</div>
+          <div id="userListContainer"></div>
+        </div>
+        <p style="margin: 1rem 0; font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">
+          请选择需要重置密码的用户，重置链接将发送至您的邮箱
+        </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal btn-cancel" id="modalCancelBtn">取消</button>
+      <button class="btn-modal btn-confirm" id="modalSubmitBtn">提交</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('timeout')) {
+    alert('登录已超时，请重新登录');
+  }
+
+  // 获取元素
+  const errorMsg = document.getElementById('errorMsg');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+
+  // 忘记密码模态框相关元素
+  const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+  const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const modalCancelBtn = document.getElementById('modalCancelBtn');
+  const modalSubmitBtn = document.getElementById('modalSubmitBtn');
+  const resetEmailInput = document.getElementById('resetEmail');
+  const modalMessage = document.getElementById('modalMessage');
+  const userListSection = document.getElementById('userListSection');
+  const userListContainer = document.getElementById('userListContainer');
+
+  // 存储当前邮箱关联的用户列表
+  let currentUsers = [];
+
+  // 显示URL中的错误信息（如?error=xxx）
+  function showError() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+
+    // 清空之前的样式和内容
+    errorMsg.classList.remove('error-visible');
+    errorMsg.textContent = '';
+
+    // 根据不同错误参数显示不同提示
+    switch(error) {
+      case 'user_not_found':
+        errorMsg.textContent = '用户名不存在，请检查输入';
+        break;
+      case 'invalid_password':
+        errorMsg.textContent = '密码错误，请重新输入';
+        break;
+      case 'account_disabled':
+        errorMsg.textContent = '账号已被禁用，请联系管理员';
+        break;
+      case 'account_locked':
+        errorMsg.textContent = '账号已被锁定，30分钟后重试';
+        break;
+      case 'unknown_error':
+        errorMsg.textContent = '登录失败，请稍后重试';
+        break;
+      default:
+        errorMsg.textContent = ''; // 无错误时清空
+    }
+    // 添加可见类
+    errorMsg.classList.add('error-visible');
+  }
+
+  // 监听表单输入（清空或修改时隐藏错误提示）
+  function hideErrorOnInput() {
+    // 当用户输入内容或清空时，隐藏错误提示
+    errorMsg.classList.remove('error-visible');
+    errorMsg.textContent = '';
+  }
+
+  // 绑定输入事件（用户名和密码框）
+  usernameInput.addEventListener('input', hideErrorOnInput);
+  passwordInput.addEventListener('input', hideErrorOnInput);
+
+  // 模态框控制函数
+  function openModal() {
+    forgotPasswordModal.classList.add('active');
+    // 重置模态框状态
+    resetModalState();
+  }
+
+  function closeModal() {
+    forgotPasswordModal.classList.remove('active');
+    // 重置模态框状态
+    setTimeout(resetModalState, 300);
+  }
+
+  function resetModalState() {
+    resetEmailInput.value = '';
+    modalMessage.textContent = '';
+    modalMessage.className = 'modal-message';
+    userListSection.style.display = 'none';
+    userListContainer.innerHTML = '';
+    modalSubmitBtn.textContent = '提交';
+    modalSubmitBtn.classList.remove('btn-loading');
+    modalSubmitBtn.disabled = false;
+    currentUsers = [];
+  }
+
+  // 渲染用户列表
+  function renderUserList(users) {
+    userListContainer.innerHTML = '';
+
+    if (!users || users.length === 0) {
+      modalMessage.textContent = '该邮箱未关联任何用户账号';
+      modalMessage.className = 'modal-message error';
+      return;
+    }
+
+    // 存储用户列表
+    currentUsers = users;
+
+    // 显示用户列表区域
+    userListSection.style.display = 'block';
+    modalMessage.textContent = '';
+    modalMessage.className = 'modal-message';
+
+    // 创建每个用户项
+    users.forEach(user => {
+      const userItem = document.createElement('div');
+      userItem.className = 'user-item';
+
+      const usernameText = document.createElement('div');
+      usernameText.className = 'username-text';
+      usernameText.textContent = user.username;
+
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'btn-reset-user';
+      resetBtn.textContent = '重置密码';
+      resetBtn.dataset.userId = user.userIndex;
+      resetBtn.dataset.username = user.username;
+
+      // 绑定重置按钮点击事件
+      resetBtn.addEventListener('click', async function() {
+        await sendResetLinkForUser(user.userIndex, user.username);
+      });
+
+      userItem.appendChild(usernameText);
+      userItem.appendChild(resetBtn);
+      userListContainer.appendChild(userItem);
+    });
+  }
+
+  // 检查邮箱是否存在关联用户的函数
+  async function checkEmailExists(email) {
+    try {
+      // 显示加载状态
+      modalSubmitBtn.innerHTML = '<span class="loading"></span>验证中...';
+      modalSubmitBtn.classList.add('btn-loading');
+
+      // 调用后台接口检查邮箱
+      const response = await fetch('/api/auth/check-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+      });
+
+      const result = await response.json();
+
+      // 恢复按钮状态
+      modalSubmitBtn.innerHTML = '提交';
+      modalSubmitBtn.classList.remove('btn-loading');
+
+      if (response.ok) {
+        // 渲染关联用户列表
+        renderUserList(result.users || []);
+      } else {
+        modalMessage.textContent = '验证失败，请稍后重试';
+        modalMessage.className = 'modal-message error';
+      }
+    } catch (error) {
+      console.error('检查邮箱失败:', error);
+      // 恢复按钮状态
+      modalSubmitBtn.innerHTML = '提交';
+      modalSubmitBtn.classList.remove('btn-loading');
+      modalMessage.textContent = '网络错误，请检查网络连接';
+      modalMessage.className = 'modal-message error';
+    }
+  }
+
+  // 为指定用户发送重置密码链接的函数
+  async function sendResetLinkForUser(userId, username) {
+    try {
+      // 找到当前用户的重置按钮并禁用
+      const resetBtn = document.querySelector(`.btn-reset-user[data-user-id="${userId}"]`);
+      if (resetBtn) {
+        resetBtn.disabled = true;
+        resetBtn.innerHTML = '<span class="loading"></span>发送中...';
+      }
+
+      // 调用后台接口发送重置链接（请替换为实际接口地址）
+      const response = await fetch('/api/auth/send-reset-link', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          email: resetEmailInput.value.trim()
+        })
+      });
+
+      const result = await response.json();
+
+      // 恢复按钮状态
+      if (resetBtn) {
+        resetBtn.disabled = false;
+        resetBtn.textContent = '重置密码';
+      }
+
+      if (response.ok) {
+        modalMessage.textContent = `已向邮箱发送【${username}】的密码重置链接，请稍后查收`;
+        modalMessage.className = 'modal-message success';
+        // 5秒后清空成功提示
+        setTimeout(() => {
+          modalMessage.textContent = '';
+          modalMessage.className = 'modal-message';
+        }, 5000);
+      } else {
+        modalMessage.textContent = `发送失败：${result.message || '请稍后重试'}`;
+        modalMessage.className = 'modal-message error';
+      }
+    } catch (error) {
+      console.error('发送重置链接失败:', error);
+      // 恢复按钮状态
+      const resetBtn = document.querySelector(`.btn-reset-user[data-user-id="${userId}"]`);
+      if (resetBtn) {
+        resetBtn.disabled = false;
+        resetBtn.textContent = '重置密码';
+      }
+      modalMessage.textContent = '网络错误，请检查网络连接';
+      modalMessage.className = 'modal-message error';
+    }
+  }
+
+  // 绑定模态框事件
+  forgotPasswordLink.addEventListener('click', openModal);
+  modalCloseBtn.addEventListener('click', closeModal);
+  modalCancelBtn.addEventListener('click', closeModal);
+
+  // 点击模态框外部关闭
+  forgotPasswordModal.addEventListener('click', function(e) {
+    if (e.target === forgotPasswordModal) {
+      closeModal();
+    }
+  });
+
+  // 模态框提交按钮点击事件
+  modalSubmitBtn.addEventListener('click', async function() {
+    const email = resetEmailInput.value.trim();
+
+    // 邮箱验证
+    if (!email) {
+      modalMessage.textContent = '请输入您的绑定邮箱';
+      modalMessage.className = 'modal-message error';
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      modalMessage.textContent = '请输入有效的邮箱地址';
+      modalMessage.className = 'modal-message error';
+      return;
+    }
+
+    // 验证邮箱并获取关联用户列表
+    await checkEmailExists(email);
+  });
+
+  // 星空动画逻辑
+  document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('.stars-container');
+    const starCount = 550; // 星星数量可适当增加
+
+    // 随机数工具函数
+    const random = (min, max) => Math.random() * (max - min) + min;
+
+    // 生成星星并设置初始状态
+    for (let i = 0; i < starCount; i++) {
+      const star = createStar();
+      container.appendChild(star);
+      // 启动第一次动画
+      startStarAnimation(star);
+    }
+
+    // 创建星星元素
+    function createStar() {
+      const star = document.createElement('div');
+      star.classList.add('star');
+
+      // 初始化星星基础属性（大小、初始位置、透明度）
+      const size = random(1, 3);
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.left = `${random(0, 100)}%`; // 随机初始X位置（屏幕内）
+      star.style.top = `${random(0, 100)}%`;  // 随机初始Y位置（屏幕内）
+      star.style.opacity = random(0.5, 1);    // 随机透明度（更真实）
+
+      return star;
+    }
+
+    // 启动星星动画（核心：动画结束后自动生成新路径）
+    function startStarAnimation(star) {
+      // 随机生成移动参数（每次动画都不同）
+      const duration = random(60, 180); // 移动周期延长至60-180秒（更自然）
+      const moveX = random(-window.innerWidth * 1.5, window.innerWidth * 1.5); // 移动距离超出屏幕1.5倍
+      const moveY = random(-window.innerHeight * 1.5, window.innerHeight * 1.5);
+
+      // 设置动画变量
+      star.style.animationDuration = `${duration}s`;
+      star.style.setProperty('--move-x', `${moveX}px`);
+      star.style.setProperty('--move-y', `${moveY}px`);
+
+      // 清除旧的动画结束事件（避免重复触发）
+      star.removeEventListener('animationend', onAnimationEnd);
+      // 监听动画结束，触发下一次移动
+      star.addEventListener('animationend', onAnimationEnd);
+
+      // 强制重绘动画（解决连续动画不触发的问题）
+      star.style.animation = 'none';
+      star.offsetHeight; // 触发重绘
+      star.style.animation = '';
+    }
+
+    // 动画结束后回调：重置位置并启动新动画
+    function onAnimationEnd(e) {
+      const star = e.target;
+
+      // 计算星星当前位置（动画结束后的位置）
+      const computedStyle = window.getComputedStyle(star);
+      const matrix = new DOMMatrix(computedStyle.transform);
+      const currentX = matrix.e; // 当前X坐标
+      const currentY = matrix.f; // 当前Y坐标
+
+      // 将星星“瞬移”到屏幕外随机位置（模拟新星星进入视野）
+      // 避免在屏幕内突然跳转，增强连续性
+      const newX = random(-window.innerWidth * 0.5, window.innerWidth * 1.5); // 左右超出屏幕范围
+      const newY = random(-window.innerHeight * 0.5, window.innerHeight * 1.5); // 上下超出屏幕范围
+
+      // 重置星星位置（无动画）
+      star.style.transform = `translate(${newX}px, ${newY}px)`;
+      star.style.left = '0'; // 清除百分比定位，改用transform控制位置
+      star.style.top = '0';
+
+      // 延迟100ms启动新动画（避免视觉闪烁）
+      setTimeout(() => {
+        startStarAnimation(star);
+      }, 1000);
+    }
+    showError();
+  });
+</script>
+</body>
+</html>

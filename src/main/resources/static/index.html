@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YZ Hub</title>
+    <link rel="icon" href="./images/MES.ico" type="image/x-icon">
+    <!-- 样式表引用 -->
+    <link rel="stylesheet" href="./libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="sidebar-logo">
+                    <img id="leftLogo" src="./images/LOGO.svg" alt="Logo" class="logo-image">
+                    <span class="gradient-text">YZ Hub</span>
+                </a>
+            </div>
+            <div class="sidebar-menu">
+                <a href="#" class="nav-link active translate-item" data-original-text="首页概览" data-module="dashboard" data-level="0">
+                    <i class="fa fa-dashboard"></i>
+                    <span>首页概览</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="设备管理" data-module="devices" data-level="9999">
+                    <i class="fa fa-cogs"></i>
+                    <span>设备管理</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="事件追踪" data-module="events" data-level="9999">
+                    <i class="fa fa-bell"></i>
+                    <span>事件追踪</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="事务管理" data-module="issues" data-level="0">
+                    <i class="fa fa-bell"></i>
+                    <span>事务管理</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="数据统计" data-module="statistics" data-level="9999">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>数据统计</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="客户管理" data-module="customers" data-level="999">
+                    <i class="fa fa-building"></i>
+                    <span>客户管理</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="项目管理" data-module="project" data-level="9">
+                    <i class="fa fa-users"></i>
+                    <span>项目管理</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="用户管理" data-module="user" data-level="9">
+                    <i class="fa fa-users"></i>
+                    <span>用户管理</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="关于我们" data-module="about" data-level="0">
+                    <i class="fa fa-info-circle"></i>
+                    <span>关于我们</span>
+                </a>
+                <a href="#" class="nav-link translate-item" data-original-text="帮助中心" data-module="help" data-level="999">
+                    <i class="fa fa-question-circle"></i>
+                    <span>帮助中心</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 顶部导航栏 -->
+            <nav class="navbar">
+                <div class="container-fluid navbar-container">
+                    <div class="navbar-left">
+                        <button class="btn mobile-menu-toggle" style="display: none;">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="navbar-right">
+                        <!-- 通知图标 -->
+                        <button class="btn btn-outline-light position-relative">
+                            <i class="fa fa-bell"></i>
+                            <span class="position-absolute top-0 right-0 w-2 h-2 bg-danger rounded-full"></span>
+                        </button>
+                        <!-- 语言 -->
+                        <div class="dropdown">
+                            <button id="langBtn" class="btn btn-outline-light d-flex align-items-center gap-2">
+                                <span class="d-sm-inline translate-item" data-original-text="选择语言">选择语言</span>
+                            </button>
+                            <div id="userLang" class="user-menu lang-switch">
+                                <a href="#" id="btn-zh"><i class="fa me-2"></i> 中文</a>
+                                <a href="#" id="btn-en"><i class="fa me-2"></i> EN</a>
+                            </div>
+                        </div>
+                        <!-- 用户菜单 -->
+                        <div class="dropdown">
+                            <button id="userMenuBtn" class="btn btn-outline-light d-flex align-items-center gap-2">
+                                <img src="images/user-avatar.png" alt="用户头像" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                                <span class="d-sm-inline" style="width: 5rem;" id="fullnameDisplay">加载中...</span>
+                            </button>
+                            <div id="userMenu" class="user-menu">
+                                <a href="#" class="translate-item" data-original-text="修改密码" id="changePwdBtn"><i class="fa fa-key me-2"></i> 修改密码</a>
+                                <a href="#" class="translate-item" data-original-text="退出登录" id="logoutBtn"><i class="fa fa-sign-out me-2"></i> 退出登录</a>
+                            </div>
+                        </div>
+<!--                        &lt;!&ndash; 示例：不同权限等级显示的内容 &ndash;&gt;-->
+<!--                        <div id="adminContent" style="display: none;">-->
+<!--                            <h3>管理员专属功能</h3>-->
+<!--                            <button>用户管理</button>-->
+<!--                            <button>角色配置</button>-->
+<!--                        </div>-->
+
+<!--                        <div id="userContent" style="display: none;">-->
+<!--                            <h3>普通用户功能</h3>-->
+<!--                            <button>个人数据</button>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </nav>
+
+            <!-- 内容容器 -->
+            <div class="content-wrapper">
+                <h1 id="pageTitle" class="page-title d-none">
+                    <i class="fa fa-dashboard"></i> 首页概览
+                </h1>
+                <div class="contentContainer" id="contentContainer">
+                    <!-- 模块内容将通过JavaScript加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加修改密码的模态框 -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true" style="top: 50%;left: 50%;transform: translate(-50%,-50%); width: 20%; height: 45vh">
+        <div class="modal-dialog" style="height: 100%;">
+            <div class="modal-content" style="height: 100%;">
+                <div class="modal-header">
+                    <h5 class="modal-title translate-item" data-original-text="修改密码">修改密码</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label translate-item" data-original-text="新密码">新密码</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                            <div class="form-text translate-item" data-original-text="密码长度至少8位，包含字母和数字">密码长度至少8位，包含字母和数字</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label translate-item" data-original-text="确认新密码">确认新密码</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="submitPasswordChange" class="translate-item" data-original-text="确认修改">确认修改</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" class="translate-item" data-original-text="取消">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 加载指示器 -->
+    <div id="loadingIndicator" class="loading-indicator">
+        <div class="spinner"></div>
+    </div>
+    <!-- 第三方库 -->
+    <script src="./libs/jquery/dist/jquery.min.js"></script>
+    <script src="./libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./libs/echarts/dist/echarts.min.js"></script>
+    <script src="./libs/highcharts/highcharts.js"></script>
+    <script src="./libs/highcharts/modules/gantt.js"></script>
+<!--    <script src="./libs/highcharts/modules/exporting.js"></script>-->
+    <script src="./libs/highcharts/modules/no-data-to-display.js"></script>
+    <script src="./libs/crypto-js/crypto-js.js"></script>
+    
+    <!-- 应用脚本 -->
+    <script src="./js/main.js"></script>
+    <script src="./js/dashboard.js"></script>
+    <script src="./js/devices.js"></script>
+    <script src="./js/events.js"></script>
+    <script src="./js/statistics.js"></script>
+    <script src="./js/customers.js"></script>
+    <script src="./js/issues.js"></script>
+    <script src="./js/user.js"></script>
+    <script src="./js/project.js"></script>
+    <!-- 前端处理逻辑 -->
+    <script>
+        // 初始化密码修改模态框
+        const changePasswordModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+
+        // 绑定修改密码按钮事件
+        document.getElementById('changePwdBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // 重置表单
+            document.getElementById('changePasswordForm').reset();
+            // 显示模态框
+            changePasswordModal.show();
+        });
+
+        // 绑定确认修改按钮事件
+        document.getElementById('submitPasswordChange').addEventListener('click', function() {
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+
+            // 简单验证
+            if (!newPwd || !confirmPwd) {
+                alert('请填写所有字段');
+                return;
+            }
+
+            if (newPwd !== confirmPwd) {
+                alert('两次输入的新密码不一致');
+                return;
+            }
+
+            if (newPwd.length < 8 || !/\d/.test(newPwd) || !/[a-zA-Z]/.test(newPwd)) {
+                alert('密码长度至少8位，且必须包含字母和数字');
+                return;
+            }
+
+            // 发送密码修改请求
+            fetch('/api/user/update-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userIndex: window.currentUser,
+                    password: newPwd
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('修改密码失败');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data) {
+                        alert('密码修改成功，请重新登录');
+                        changePasswordModal.hide();
+                        // 这里可以添加退出登录逻辑
+                        window.location.href = '/login.html';
+                    } else {
+                        alert('修改密码失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('修改密码出错:', error);
+                    alert('修改密码时发生错误，请稍后重试');
+                });
+        });
+
+        // 全局配置
+        const config = {
+            translateClass: 'translate-item',
+            ignoreClass: 'translataddUpdateModale-item-ignore',
+            translateApiUrl: '/api/translate/batch',
+            userInfoUrl: '/api/user/current',
+            updateLangUrl: '/api/user/update-lang',
+            cacheKey: 'translate-cache'
+        };
+
+        // 全局变量
+        let currentUserLang = 'zh'; // 默认中文
+        let translateCache = {};
+
+        // 1. 本地存储工具（仅缓存翻译结果，语言从后端获取）
+        function isLocalStorageAvailable() {
+            try {
+                const testKey = 'test-' + Date.now();
+                localStorage.setItem(testKey, testKey);
+                localStorage.removeItem(testKey);
+                return true;
+            } catch (e) {
+                console.warn('LocalStorage不可用：', e);
+                return false;
+            }
+        }
+        const storageOK = isLocalStorageAvailable();
+
+        // 初始化翻译缓存
+        if (storageOK) {
+            try {
+                const cacheFromStorage = localStorage.getItem(config.cacheKey);
+                translateCache = cacheFromStorage ? JSON.parse(cacheFromStorage) : {};
+                if (typeof translateCache !== 'object' || translateCache === null) translateCache = {};
+            } catch (e) {
+                translateCache = {};
+            }
+        }
+
+        // 保存翻译缓存
+        function saveCache() {
+            if (!storageOK) return;
+            try {
+                localStorage.setItem(config.cacheKey, JSON.stringify(translateCache));
+            } catch (e) {
+                console.error('缓存保存失败：', e);
+            }
+        }
+
+        // 2. 获取当前用户信息（核心：读取用户语言配置）
+        async function getCurrentUserInfo() {
+            const response = await fetch(config.userInfoUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        window.location.href = '/login.html?timeout=true';
+                        throw new Error('获取用户信息失败');
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    // 1. 显示用户名
+                    document.getElementById('fullnameDisplay').textContent = user.fullName;
+                    // 2. 处理角色等级
+                    const maxLevel = user.rolerlevel; // 取最高等级
+                    window.currentUser = user.userIndex;
+                    window.currentUserLevel = user.rolerlevel;
+                    currentUserLang = (user.language && ['zh', 'en'].includes(user.language)) ? user.language : 'zh';
+                    console.log(currentUserLang)
+
+                    // 3. 筛选侧边栏菜单，并获取可见的第一个模块
+                    const firstVisibleModule = filterSidebarMenu(maxLevel);
+
+                    // 4. 加载第一个可见模块（替代默认的dashboard）
+                    if (firstVisibleModule) {
+                        app.loadModule(firstVisibleModule);
+                    }
+                })
+                .catch(error => {
+                    console.error('获取用户信息出错：', error);
+                    document.getElementById('fullnameDisplay').textContent = '未知用户';
+                });
+        }
+
+        // 3. 更新用户语言配置（切换语言时调用）
+        async function updateUserLang(targetLang) {
+            if (!window.currentUser) return false;
+            const user = {
+                userIndex: window.currentUser,
+                language: targetLang
+            }
+            await fetch(config.updateLangUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('更新用户语言失败');
+                    return response.json();
+                })
+                .then(() => {
+                    console.log('用户语言更新成功：', targetLang);
+                    return true;
+                })
+                .catch(error => {
+                    console.error('更新用户语言报错：', e);
+                    return false;
+                });
+
+        }
+
+        // 4. 收集需翻译的文本
+        function collectTexts() {
+            const texts = [];
+            // 使用更灵活的选择器，确保包含所有动态加载的内容
+            document.querySelectorAll(`.${config.translateClass}:not(.${config.ignoreClass})`).forEach(el => {
+                const text = el.textContent.trim();
+                if (text && !texts.includes(text)) {
+                    texts.push(text);
+                    // 确保原始文本被正确记录
+                    if (!el.dataset.originalText) {
+                        el.dataset.originalText = text;
+                    }
+                }
+            });
+            return texts;
+        }
+
+        // 5. 调用翻译接口
+        async function translate(texts, toLang) {
+            const uncached = texts.filter(t => !translateCache[`${t}_${toLang}`]);
+            if (uncached.length === 0) {
+                const res = {};
+                texts.forEach(t => res[t] = translateCache[`${t}_${toLang}`]);
+                saveCache();
+                return res;
+            }
+
+            try {
+                const resp = await fetch(config.translateApiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ texts: uncached, to: toLang })
+                });
+                if (!resp.ok) throw new Error(`翻译接口失败：${resp.status}`);
+                const data = await resp.json();
+
+                Object.keys(data).forEach(t => translateCache[`${t}_${toLang}`] = data[t]);
+                saveCache();
+
+                const res = {};
+                texts.forEach(t => res[t] = translateCache[`${t}_${toLang}`] || t);
+                return res;
+            } catch (e) {
+                console.error('翻译接口报错：', e);
+                const res = {};
+                texts.forEach(t => res[t] = translateCache[`${t}_${toLang}`] || t);
+                return res;
+            }
+        }
+
+        // 6. 渲染页面语言
+        async function renderLang(targetLang) {
+            // 更新html lang属性
+            document.documentElement.lang = targetLang === 'zh' ? 'zh-CN' : 'en-US';
+
+            await new Promise(resolve => setTimeout(resolve, 0));
+            const texts = collectTexts();
+            if (texts.length === 0) return;
+
+            const transMap = await translate(texts, targetLang);
+
+            document.querySelectorAll(`.${config.translateClass}:not(.${config.ignoreClass})`).forEach(el => {
+                if (!el.dataset.originalText) {
+                    el.dataset.originalText = el.textContent.trim();
+                }
+                const original = el.dataset.originalText;
+                if (el.textContent.trim() !== transMap[original]) {
+                    el.textContent = transMap[original];
+                }
+                // const original = el.dataset.originalText || el.textContent.trim();
+                // el.textContent = transMap[original] || original;
+            });
+
+            currentUserLang = targetLang;
+        }
+
+        // 7. 语言切换逻辑（同步更新后端+前端渲染）
+        async function switchLang(targetLang) {
+            // 先更新后端用户语言
+            const updateSuccess = await updateUserLang(targetLang);
+            // 无论后端是否成功，都渲染前端语言（保证用户体验）
+            await renderLang(targetLang);
+        }
+
+        // window.onload = function() {
+        //     // 调用接口获取当前用户信息（含角色等级）
+        //     fetch('/api/user/current')
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 window.location.href = '/login.html?timeout=true';
+        //                 throw new Error('获取用户信息失败');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(user => {
+        //             // 1. 显示用户名
+        //             document.getElementById('fullnameDisplay').textContent = user.fullName;
+        //             // 2. 处理角色等级
+        //             const maxLevel = user.rolerlevel; // 取最高等级
+        //             window.currentUser = user.userIndex;
+        //             window.currentUserLevel = user.rolerlevel;
+        //             window.currentUserLang = (user.language && ['zh', 'en'].includes(user.language)) ? user.language : 'zh';
+        //
+        //             // 3. 筛选侧边栏菜单，并获取可见的第一个模块
+        //             const firstVisibleModule = filterSidebarMenu(maxLevel);
+        //
+        //             // 4. 加载第一个可见模块（替代默认的dashboard）
+        //             if (firstVisibleModule) {
+        //                 app.loadModule(firstVisibleModule);
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('获取用户信息出错：', error);
+        //             document.getElementById('fullnameDisplay').textContent = '未知用户';
+        //         });
+        // };
+
+        // 8. 页面初始化（核心：先读用户语言，再渲染）
+        async function initPage() {
+            await getCurrentUserInfo();
+            await renderLang(currentUserLang);
+        }
+
+        // 根据用户最高等级筛选菜单，并返回第一个可见模块
+        function filterSidebarMenu(maxLevel) {
+            const menuItems = document.querySelectorAll('.sidebar-menu .nav-link');
+            let firstVisibleModule = null;
+
+            menuItems.forEach((item, index) => {
+                const requiredLevel = parseInt(item.getAttribute('data-level'));
+
+                if (maxLevel >= requiredLevel) {
+                    item.style.display = 'block';
+                    // 记录第一个可见的模块
+                    if (!firstVisibleModule) {
+                        firstVisibleModule = item.getAttribute('data-module');
+                    }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            return firstVisibleModule;
+        }
+
+        window.addEventListener('load', initPage);
+    </script>
+</body>
+</html>
+    
